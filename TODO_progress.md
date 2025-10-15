@@ -1,0 +1,3 @@
+- [x] Update ganana/app/templates/adjust_stock.html to send JSON to /adjust_stock API and remove manual_reason logic
+- [x] Remove POST /adjust-stock route from ganana/app/web.py
+- [x] Test the adjust stock functionality

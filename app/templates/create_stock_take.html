@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Create New Stock Take</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+<form method="post" class="mb-0">
+    <div class="mb-3">
+        <label for="id" class="form-label">Stock Take ID (manual entry)</label>
+        <input type="number" class="form-control" id="id" name="id" placeholder="Enter Stock Take ID" required>
+    </div>
+    <div class="mb-3">
+        <label for="location_id" class="form-label">Location ID</label>
+        <input type="number" class="form-control" id="location_id" name="location_id" placeholder="Enter Location ID" required>
+    </div>
+    <div class="mb-3">
+        <label for="start_date" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" required>
+    </div>
+    <div class="mb-3">
+        <label for="end_date" class="form-label">End Date (optional)</label>
+        <input type="date" class="form-control" id="end_date" name="end_date">
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status (manual entry)</label>
+        <select class="form-select" id="status" name="status">
+            <option value="open" selected>Open</option>
+            <option value="closed">Closed</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Create Stock Take</button>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if message %}
+<div class="alert alert-info">{{ message }}</div>
+{% endif %}
+<a href="/stock-take" class="btn btn-secondary">Back to Stock Takes</a>
+{% endblock %}

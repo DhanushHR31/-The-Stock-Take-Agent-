@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1 class="text-center"><i class="bi bi-house-door me-2"></i>Welcome to Ganana</h1>
+  <p class="lead text-center">Run stock takes, record counts, review variances, and adjust inventory with a simple, mobile-friendly workflow.</p>
+</div>
+<div class="text-center mb-4">
+  <a href="/stock-take/create" class="btn btn-primary btn-lg me-2"><i class="bi bi-clipboard-plus me-2"></i>Create Stock Take</a>
+  <a href="/report" class="btn btn-outline-primary btn-lg"><i class="bi bi-graph-up-arrow me-2"></i>View Report</a>
+</div>
+
+<div class="row mt-3">
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-clipboard-data me-2"></i>Stock Take</h5>
+				<p class="card-text">Start or review a physical stock take for your inventory. You can create a new stock take and update its status.</p>
+				<a href="/stock-take" class="btn btn-primary mt-auto"><i class="bi bi-box-seam me-1"></i>Go to Stock Take</a>
+				<a href="/stock-take/create" class="btn btn-outline-primary mt-2"><i class="bi bi-plus-circle me-1"></i>Create Stock Take</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-clipboard-check me-2"></i>Stock Take Count</h5>
+				<p class="card-text">Add counted quantities to a stock take. This is your responsibility as the stock taker.</p>
+				<a href="/stock-count/create" class="btn btn-primary mt-auto"><i class="bi bi-plus-circle me-1"></i>Add Stock Take Count</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-archive me-2"></i>Inventory</h5>
+				<p class="card-text">Create or view inventory levels.</p>
+				<a href="/inventory/create" class="btn btn-primary mt-auto"><i class="bi bi-plus-circle me-1"></i>Create Inventory</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-sliders me-2"></i>Adjust Stock</h5>
+				<p class="card-text">Quickly adjust inventory levels with a reason code.</p>
+				<a href="/adjust-stock" class="btn btn-primary mt-auto"><i class="bi bi-pencil-square me-1"></i>Adjust Stock</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-table me-2"></i>Show All Information</h5>
+				<p class="card-text">View, edit, or delete all Stock Takes, Stock Take Counts, and Inventory records stored in the database.</p>
+				<a href="/show-information" class="btn btn-info mt-auto"><i class="bi bi-card-list me-1"></i>Show Information</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mb-3">
+		<div class="card h-100">
+			<div class="card-body d-flex flex-column justify-content-between">
+				<h5 class="card-title"><i class="bi bi-bar-chart-line me-2"></i>Stock Take Report</h5>
+				<p class="card-text">View a full variance report for any stock take by entering its ID.</p>
+				<a href="/report" class="btn btn-primary mt-auto"><i class="bi bi-graph-up-arrow me-1"></i>View Report</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}

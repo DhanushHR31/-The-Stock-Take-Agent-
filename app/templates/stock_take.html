@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1 class="text-center"><i class="bi bi-clipboard-data me-2"></i>Stock Takes</h1>
+  <p class="lead text-center">Manage and review all stock take records.</p>
+</div>
+<div class="text-center mb-4">
+  <a href="/stock-take/create" class="btn btn-primary btn-lg"><i class="bi bi-plus-circle me-2"></i>Create New Stock Take</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    {% if stock_takes|length == 0 %}
+      <div class="alert alert-warning mb-0">No stock takes found. Create one to get started.</div>
+    {% else %}
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Location</th>
+            <th scope="col">Status</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for st in stock_takes %}
+          <tr>
+            <td>{{ st.id }}</td>
+            <td>{{ st.location_id }}</td>
+            <td>
+              <span class="badge {% if st.status == 'open' %}badge-warning{% else %}badge-success{% endif %}">{{ st.status }}</span>
+            </td>
+            <td>{{ st.start_date }}</td>
+            <td>{{ st.end_date or '-' }}</td>
+            <td class="text-end">
+              <a href="/variance-report/{{ st.id }}" class="btn btn-sm btn-primary me-1"><i class="bi bi-bar-chart-line"></i> Variance</a>
+              <a href="/stock-take/{{ st.id }}" class="btn btn-sm btn-secondary me-1"><i class="bi bi-pencil-square"></i> Edit</a>
+              <form method="post" action="/stock-take/{{ st.id }}/delete" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this Stock Take?');"><i class="bi bi-trash"></i> Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

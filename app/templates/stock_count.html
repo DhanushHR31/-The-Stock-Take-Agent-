@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1 class="text-center"><i class="bi bi-clipboard-check me-2"></i>Stock Take Counts</h1>
+  <p class="lead text-center">Review and manage stock take count records.</p>
+</div>
+<div class="text-center mb-4">
+  <a href="/stock-count/create" class="btn btn-primary btn-lg"><i class="bi bi-plus-circle me-2"></i>Create Stock Take Count</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    {% if counts|length == 0 %}
+      <div class="alert alert-warning mb-0"><i class="bi bi-info-circle me-2"></i>No stock counts found. Add one to begin tracking.</div>
+    {% else %}
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Stock Take ID</th>
+            <th>Item ID</th>
+            <th>System Qty</th>
+            <th>Counted Qty</th>
+            <th>Variance</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in counts %}
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.stock_take_id }}</td>
+            <td>{{ c.item_id }}</td>
+            <td>{{ c.system_quantity }}</td>
+            <td>{{ c.counted_quantity }}</td>
+            <td><span class="badge {% if c.variance < 0 %}badge-danger{% elif c.variance > 0 %}badge-warning{% else %}badge-success{% endif %}">{{ c.variance }}</span></td>
+            <td class="text-end">
+              <form method="post" action="/stock-count/{{ c.id }}/delete" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this Stock Count?');"><i class="bi bi-trash"></i> Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <a href="/" class="btn btn-secondary btn-lg"><i class="bi bi-house-door me-2"></i>Back to Home</a>
+</div>
+{% endblock %}

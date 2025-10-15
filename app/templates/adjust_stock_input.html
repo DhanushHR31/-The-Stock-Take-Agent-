@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .form-control:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+</style>
+<div class="page-header">
+  <h1 class="text-center"><i class="bi bi-plus-circle me-2"></i>Adjust Stock Input</h1>
+  <p class="lead text-center">Enter details to adjust inventory quantity.</p>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <form id="adjust-stock-input-form" action="/adjust-stock-input" method="post">
+                    <div class="mb-3">
+                        <label for="item_id" class="form-label"><i class="bi bi-tag me-1"></i>Item ID</label>
+                        <input type="number" class="form-control" id="item_id" name="item_id" placeholder="Enter item ID" required min="1">
+                        <div class="invalid-feedback">Please enter a valid item ID.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location_id" class="form-label"><i class="bi bi-geo-alt me-1"></i>Location ID</label>
+                        <input type="number" class="form-control" id="location_id" name="location_id" placeholder="Enter location ID" required min="1">
+                        <div class="invalid-feedback">Please enter a valid location ID.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_quantity" class="form-label"><i class="bi bi-calculator me-1"></i>New Quantity on Hand</label>
+                        <input type="number" step="any" class="form-control" id="new_quantity" name="new_quantity" placeholder="Enter new quantity" required min="0">
+                        <div class="invalid-feedback">Please enter a valid quantity (0 or greater).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reason_code" class="form-label"><i class="bi bi-question-circle me-1"></i>Reason</label>
+                        <select class="form-select" id="reason_code" name="reason_code" required>
+                            <option value="">-- Select Reason --</option>
+                            <option value="COUNT_ERROR">COUNT_ERROR</option>
+                            <option value="DAMAGED_GOODS">DAMAGED_GOODS</option>
+                            <option value="EXPIRED">EXPIRED</option>
+                            <option value="LOSS_SHRINKAGE">LOSS_SHRINKAGE</option>
+                            <option value="SUPPLIER_RETURN">SUPPLIER_RETURN</option>
+                            <option value="TRANSFER_OUT">TRANSFER_OUT</option>
+                            <option value="TRANSFER_IN">TRANSFER_IN</option>
+                            <option value="SYSTEM_ERROR">SYSTEM_ERROR</option>
+                            <option value="PROMO_WRITE_OFF">PROMO_WRITE_OFF</option>
+                            <option value="INITIAL_SETUP">INITIAL_SETUP</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a reason.</div>
+                    </div>
+                    <div class="mb-3" id="other_reason_div" style="display: none;">
+                        <label for="other_reason" class="form-label"><i class="bi bi-pencil me-1"></i>Specify Other Reason</label>
+                        <input type="text" class="form-control" id="other_reason" name="other_reason" placeholder="Enter custom reason">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submit-btn"><i class="bi bi-check-circle me-2"></i>Adjust Stock</button>
+                    </div>
+                </form>
+                {% if error %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<script>
+document.getElementById('reason_code').addEventListener('change', function() {
+    const otherDiv = document.getElementById('other_reason_div');
+    if (this.value === 'OTHER') {
+        otherDiv.style.display = 'block';
+    } else {
+        otherDiv.style.display = 'none';
+    }
+});
+</script>

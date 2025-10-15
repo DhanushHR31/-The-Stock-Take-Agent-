@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Stock Take Variance Report</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+<form method="get" class="mb-0">
+    <div class="mb-3">
+        <label for="stock_take_id" class="form-label">Stock Take ID</label>
+        <input type="number" class="form-control" id="stock_take_id" name="stock_take_id" required>
+    </div>
+    <button type="submit" class="btn btn-primary">View Report</button>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if stock_take %}
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Stock Take #{{ stock_take.id }}</h5>
+    <p class="card-text">Location: {{ stock_take.location_id }}<br>Start: {{ stock_take.start_date }}<br>End: {{ stock_take.end_date or '-' }}<br>Status: {{ stock_take.status }}</p>
+  </div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead><tr><th>Item ID</th><th>System Qty</th><th>Counted Qty</th><th>Variance</th><th>Current On Hand</th><th>Committed</th></tr></thead>
+    <tbody>
+    {% for c in counts %}
+    <tr>
+        <td>{{ c.item_id }}</td>
+        <td>{{ c.system_quantity }}</td>
+        <td>{{ c.counted_quantity }}</td>
+        <td>{{ c.variance }}</td>
+        <td>{{ inventory[c.item_id]['on_hand'] if inventory[c.item_id] else '-' }}</td>
+        <td>{{ inventory[c.item_id]['committed'] if inventory[c.item_id] else '-' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+{% if message %}<div class="alert alert-warning">{{ message }}</div>{% endif %}
+<a href="/" class="btn btn-secondary">Back to Home</a>
+{% endblock %}

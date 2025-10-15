@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Stock Take Variance Report</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+<form method="get" action="/report" class="mb-0">
+    <label for="stock_take_id" class="form-label">Stock Take ID</label>
+    <input type="text" class="form-control mb-2" name="stock_take_id" id="stock_take_id" value="{{ stock_take_id or '' }}" />
+    <button class="btn btn-primary" type="submit">View Report</button>
+
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if stock_take %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Stock Take #{{ stock_take.id }}</h5>
+        <p class="card-text">
+            Location: {{ stock_take.location_id }}<br>
+            Start: {{ stock_take.start_date }}<br>
+            End: {{ stock_take.end_date or '-' }}<br>
+            Status: {{ stock_take.status }}
+        </p>
+    </div>
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>System Qty</th>
+            <th>Counted Qty</th>
+            <th>Variance</th>
+            <th>Current On Hand</th>
+            <th>Committed</th>
+            <th>Adjustment Qty</th>
+            <th>Adjustment Reason</th>
+            <th>Adjustment Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in counts %}
+        <tr>
+            <td>{{ c.item_id }}</td>
+            <td>{{ c.system_quantity }}</td>
+            <td>{{ c.counted_quantity }}</td>
+            <td>{{ c.variance }}</td>
+            <td>{{ inventory[c.item_id].on_hand if inventory[c.item_id] else '-' }}</td>
+            <td>{{ inventory[c.item_id].committed if inventory[c.item_id] else '-' }}</td>
+            {% set adj = (adjustment_logs | selectattr('item_id', 'equalto', c.item_id) | list) %}
+            <td>{% if adj and adj[0] %}{{ adj[0].new_quantity }}{% else %}-{% endif %}</td>
+            <td>{% if adj and adj[0] %}{{ adj[0].reason_code }}{% else %}-{% endif %}</td>
+            <td>{% if adj and adj[0] %}{{ adj[0].timestamp }}{% else %}-{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<a href="/variance-report/{{ stock_take.id }}/pdf" class="btn btn-success">Download PDF</a>
+{% else %}
+<div class="alert alert-warning">No Stock Take selected or found.</div>
+{% endif %}
+<a href="/" class="btn btn-secondary">Back to Home</a>
+{% endblock %}

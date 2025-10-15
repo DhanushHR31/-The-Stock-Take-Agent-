@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Stock Take Details</h2>
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% else %}
+<form method="post">
+    <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input type="text" class="form-control" id="id" name="id" value="{{ stock_take.id }}" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="location_id" class="form-label">Location ID</label>
+        <input type="number" class="form-control" id="location_id" name="location_id" value="{{ stock_take.location_id }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="start_date" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ stock_take.start_date.strftime('%Y-%m-%d') if stock_take.start_date else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="end_date" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ stock_take.end_date.strftime('%Y-%m-%d') if stock_take.end_date else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" name="status">
+            <option value="open" {% if stock_take.status == 'open' %}selected{% endif %}>Open</option>
+            <option value="closed" {% if stock_take.status == 'closed' %}selected{% endif %}>Closed</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Stock Take</button>
+</form>
+{% if message %}<div class="alert alert-success mt-3">{{ message }}</div>{% endif %}
+{% endif %}
+<a href="/stock-take" class="btn btn-secondary mt-3">Back to Stock Takes</a>
+{% endblock %}

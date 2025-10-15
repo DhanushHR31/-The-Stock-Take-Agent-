@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Create Inventory Level</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+<form method="post" class="mb-0">
+    <div class="mb-3">
+        <label for="id" class="form-label">Inventory ID (manual entry)</label>
+        <input type="number" class="form-control" id="id" name="id" placeholder="Enter Inventory ID" required>
+    </div>
+    <div class="mb-3">
+        <label for="item_id" class="form-label">Item ID</label>
+        <input type="number" class="form-control" id="item_id" name="item_id" placeholder="Enter Item ID" required>
+    </div>
+    <div class="mb-3">
+        <label for="location_id" class="form-label">Location ID</label>
+        <input type="number" class="form-control" id="location_id" name="location_id" placeholder="Enter Location ID" required>
+    </div>
+    <div class="mb-3">
+        <label for="quantity_on_hand" class="form-label">Quantity On Hand</label>
+        <input type="number" step="any" class="form-control" id="quantity_on_hand" name="quantity_on_hand" placeholder="Enter Quantity On Hand" required>
+    </div>
+    <div class="mb-3">
+        <label for="quantity_committed" class="form-label">Quantity Committed</label>
+        <input type="number" step="any" class="form-control" id="quantity_committed" name="quantity_committed" placeholder="Enter Quantity Committed" required>
+    </div>
+    <button type="submit" class="btn btn-success">Create Inventory</button>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if message %}
+<div class="alert alert-info">{{ message }}</div>
+{% endif %}
+<a href="/" class="btn btn-secondary">Back to Home</a>
+{% endblock %}

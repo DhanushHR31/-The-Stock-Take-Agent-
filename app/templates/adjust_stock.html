@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+  <h1 class="text-center"><i class="bi bi-pencil-square me-2"></i>Adjust Stock</h1>
+  <p class="lead text-center">View all data and adjust inventory quantities.</p>
+  {% if request.query_params.get('success') %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-2"></i>Stock adjusted successfully! The inventory has been updated and logged.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+</div>
+<div class="text-center mb-4">
+  <a href="/adjust-stock-input" class="btn btn-primary btn-lg"><i class="bi bi-plus-circle me-2"></i>Adjust Stock</a>
+</div>
+
+<!-- Tabs for Data Sections -->
+<ul class="nav nav-tabs mb-4" id="dataTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab" aria-controls="inventory" aria-selected="true"><i class="bi bi-archive me-1"></i>Inventory</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="stock-takes-tab" data-bs-toggle="tab" data-bs-target="#stock-takes" type="button" role="tab" aria-controls="stock-takes" aria-selected="false"><i class="bi bi-clipboard-data me-1"></i>Stock Takes</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="stock-counts-tab" data-bs-toggle="tab" data-bs-target="#stock-counts" type="button" role="tab" aria-controls="stock-counts" aria-selected="false"><i class="bi bi-clipboard-check me-1"></i>Stock Counts</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="adjustment-logs-tab" data-bs-toggle="tab" data-bs-target="#adjustment-logs" type="button" role="tab" aria-controls="adjustment-logs" aria-selected="false"><i class="bi bi-journal-text me-1"></i>Adjustment Logs</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="dataTabsContent">
+  <!-- Inventory Tab -->
+  <div class="tab-pane fade show active" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-archive me-2"></i>All Stored Inventory Information</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Item ID</th>
+                <th>Location ID</th>
+                <th>Qty On Hand</th>
+                <th>Qty Committed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for inv in all_inventory %}
+              <tr>
+                <td>{{ inv.id }}</td>
+                <td>{{ inv.item_id }}</td>
+                <td>{{ inv.location_id }}</td>
+                <td>{{ inv.quantity_on_hand }}</td>
+                <td>{{ inv.quantity_committed }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Takes Tab -->
+  <div class="tab-pane fade" id="stock-takes" role="tabpanel" aria-labelledby="stock-takes-tab">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-clipboard-data me-2"></i>Stock Takes</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Start</th>
+                <th>End</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for st in all_stock_takes %}
+              <tr>
+                <td>{{ st.id }}</td>
+                <td>{{ st.location_id }}</td>
+                <td><span class="badge {% if st.status == 'open' %}badge-warning{% else %}badge-success{% endif %}">{{ st.status }}</span></td>
+                <td>{{ st.start_date }}</td>
+                <td>{{ st.end_date or '-' }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Counts Tab -->
+  <div class="tab-pane fade" id="stock-counts" role="tabpanel" aria-labelledby="stock-counts-tab">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-clipboard-check me-2"></i>Stock Take Counts</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Stock Take ID</th>
+                <th>Item ID</th>
+                <th>System Qty</th>
+                <th>Counted Qty</th>
+                <th>Variance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in all_stock_counts %}
+              <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.stock_take_id }}</td>
+                <td>{{ c.item_id }}</td>
+                <td>{{ c.system_quantity }}</td>
+                <td>{{ c.counted_quantity }}</td>
+                <td><span class="badge {% if c.variance < 0 %}badge-danger{% elif c.variance > 0 %}badge-warning{% else %}badge-success{% endif %}">{{ c.variance }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adjustment Logs Tab -->
+  <div class="tab-pane fade" id="adjustment-logs" role="tabpanel" aria-labelledby="adjustment-logs-tab">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Adjustment Logs</h5>
+      </div>
+      <div class="card-body">
+        {% if adjustment_logs %}
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Item ID</th>
+                <th>Location ID</th>
+                <th>Old Qty</th>
+                <th>New Qty</th>
+                <th>Reason</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in adjustment_logs %}
+              <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.item_id }}</td>
+                <td>{{ log.location_id }}</td>
+                <td>{{ log.old_quantity }}</td>
+                <td>{{ log.new_quantity }}</td>
+                <td><span class="badge bg-info">{{ log.reason_code }}</span></td>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>No adjustment logs available.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

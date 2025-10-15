@@ -1,0 +1,137 @@
+
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Search Results</h1>
+<p class="text-muted">Query: {{ query or '—' }}</p>
+
+{% if results.stock_takes or results.stock_counts or results.inventory or results.adjustment_logs %}
+  {% if results.stock_takes %}
+  <div class="card mb-3">
+    <div class="card-header">Stock Takes</div>
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Start</th>
+            <th>End</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for st in results.stock_takes %}
+          <tr>
+            <td>{{ st.id }}</td>
+            <td>{{ st.location_id }}</td>
+            <td>{{ st.status }}</td>
+            <td>{{ st.start_date }}</td>
+            <td>{{ st.end_date }}</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="/stock-take/{{ st.id }}">Open</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if results.stock_counts %}
+  <div class="card mb-3">
+    <div class="card-header">Stock Take Counts</div>
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Stock Take</th>
+            <th>Item</th>
+            <th>System Qty</th>
+            <th>Counted Qty</th>
+            <th>Variance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in results.stock_counts %}
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.stock_take_id }}</td>
+            <td>{{ c.item_id }}</td>
+            <td>{{ c.system_quantity }}</td>
+            <td>{{ c.counted_quantity }}</td>
+            <td>{{ c.variance }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if results.inventory %}
+  <div class="card mb-3">
+    <div class="card-header">Inventory</div>
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>Location</th>
+            <th>On Hand</th>
+            <th>Committed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inv in results.inventory %}
+          <tr>
+            <td>{{ inv.id }}</td>
+            <td>{{ inv.item_id }}</td>
+            <td>{{ inv.location_id }}</td>
+            <td>{{ inv.quantity_on_hand }}</td>
+            <td>{{ inv.quantity_committed }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if results.adjustment_logs %}
+  <div class="card mb-3">
+    <div class="card-header">Adjustment Logs</div>
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>Location</th>
+            <th>New Qty</th>
+            <th>Reason</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in results.adjustment_logs %}
+          <tr>
+            <td>{{ log.id }}</td>
+            <td>{{ log.item_id }}</td>
+            <td>{{ log.location_id }}</td>
+            <td>{{ log.new_quantity }}</td>
+            <td>{{ log.reason_code }}</td>
+            <td>{{ log.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+{% else %}
+  <div class="alert alert-info">No results found.</div>
+{% endif %}
+{% endblock %}

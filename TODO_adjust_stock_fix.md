@@ -1,0 +1,5 @@
+- [x] Edit ganana/app/web.py to always query all adjustment logs in adjust_stock_page function, removing conditional filtering.
+- [x] Edit ganana/app/api/adjustment.py to use direct assignment for inv.quantity_on_hand instead of setattr, and add try-except for db.commit().
+- [x] Run the application and test the adjust stock functionality.
+- [x] Verify that inventory quantities are updated in the database and UI.
+- [x] Confirm that adjustment logs are saved and displayed in the Adjustment Logs tab.

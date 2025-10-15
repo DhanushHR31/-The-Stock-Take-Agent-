@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Add Stock Take Count</h2>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+<form method="post" class="mb-0">
+        <div class="mb-3">
+            <label for="id" class="form-label">Stock Count ID (manual entry)</label>
+            <input type="number" class="form-control" id="id" name="id" placeholder="Enter Stock Count ID" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock_take_id" class="form-label">Stock Take ID</label>
+            <input type="number" class="form-control" id="stock_take_id" name="stock_take_id" placeholder="Enter Stock Take ID" required>
+        </div>
+        <div class="mb-3">
+            <label for="item_id" class="form-label">Item ID</label>
+            <input type="number" class="form-control" id="item_id" name="item_id" placeholder="Enter Item ID" required>
+        </div>
+        <div class="mb-3">
+            <label for="system_quantity" class="form-label">System Quantity</label>
+            <input type="number" step="any" class="form-control" id="system_quantity" name="system_quantity" placeholder="Enter System Quantity" required>
+        </div>
+        <div class="mb-3">
+            <label for="counted_quantity" class="form-label">Counted Quantity</label>
+            <input type="number" step="any" class="form-control" id="counted_quantity" name="counted_quantity" placeholder="Enter Counted Quantity" required>
+        </div>
+        <button type="submit" class="btn btn-success">Create Stock Count</button>
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if message %}
+<div class="alert alert-info">{{ message }}</div>
+{% endif %}
+<a href="/stock-take" class="btn btn-secondary">Back to Stock Takes</a>
+{% endblock %}
